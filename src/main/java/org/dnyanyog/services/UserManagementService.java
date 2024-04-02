@@ -1,7 +1,6 @@
 package org.dnyanyog.services;
 
 import java.util.Optional;
-
 import org.dnyanyog.common.ResponseCode;
 import org.dnyanyog.dto.UserData;
 import org.dnyanyog.dto.UserRequest;
@@ -16,51 +15,48 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Service
 public class UserManagementService {
 
-	@Autowired
-	UsersRepository userRepo;
-	
-	@Autowired
-	EncryptionService encryptionService;
+  @Autowired UsersRepository userRepo;
 
-	public UserResponse adduser(@RequestBody UserRequest userRequest) throws Exception {
-		UserResponse response = new UserResponse();
+  @Autowired EncryptionService encryptionService;
 
-		Users usersTable = new Users();
+  public UserResponse adduser(@RequestBody UserRequest userRequest) throws Exception {
+    UserResponse response = new UserResponse();
 
-		usersTable.setAge(userRequest.getAge());
-		usersTable.setEmail(userRequest.getEmail());
-		usersTable.setPassword(encryptionService.encrypt(userRequest.getPassword()));
-		usersTable.setUserName(userRequest.getUsername());
+    Users usersTable = new Users();
 
-		userRepo.save(usersTable);
+    usersTable.setAge(userRequest.getAge());
+    usersTable.setEmail(userRequest.getEmail());
+    usersTable.setPassword(encryptionService.encrypt(userRequest.getPassword()));
+    usersTable.setUserName(userRequest.getUsername());
 
-		response.setStatus(ResponseCode.USER_ADDED.getStatus());
-		response.setMessage(ResponseCode.USER_ADDED.getMessage());
-		response.setUserId(usersTable.getUserId());
+    userRepo.save(usersTable);
 
-		return response;
+    response.setStatus(ResponseCode.USER_ADDED.getStatus());
+    response.setMessage(ResponseCode.USER_ADDED.getMessage());
+    response.setUserId(usersTable.getUserId());
 
-	}
+    return response;
+  }
 
-	public UserData getSingleUser(Long userId) {
+  public UserData getSingleUser(Long userId) {
 
-		UserData userResponse = new UserData();
+    UserData userResponse = new UserData();
 
-		Optional<Users> receivedData = userRepo.findById(userId);
+    Optional<Users> receivedData = userRepo.findById(userId);
 
-		if (receivedData.isEmpty()) {
-			userResponse.setStatus(ResponseCode.USER_NOT_FOUND.getStatus());
-			userResponse.setMessage(ResponseCode.USER_NOT_FOUND.getMessage());
-		} else {
-			Users user = receivedData.get();
-			userResponse.setStatus(ResponseCode.USER_SEARCH.getStatus());
-			userResponse.setMessage(ResponseCode.USER_SEARCH.getMessage());
-			userResponse.setAge(user.getAge());
-			userResponse.setEmail(user.getEmail());
-			userResponse.setUsername(user.getUserName());
-			userResponse.setPassword(user.getPassword());
-			userResponse.setUserId(user.getUserId());
-		}
-		return userResponse;
-	}
+    if (receivedData.isEmpty()) {
+      userResponse.setStatus(ResponseCode.USER_NOT_FOUND.getStatus());
+      userResponse.setMessage(ResponseCode.USER_NOT_FOUND.getMessage());
+    } else {
+      Users user = receivedData.get();
+      userResponse.setStatus(ResponseCode.USER_SEARCH.getStatus());
+      userResponse.setMessage(ResponseCode.USER_SEARCH.getMessage());
+      userResponse.setAge(user.getAge());
+      userResponse.setEmail(user.getEmail());
+      userResponse.setUsername(user.getUserName());
+      userResponse.setPassword(user.getPassword());
+      userResponse.setUserId(user.getUserId());
+    }
+    return userResponse;
+  }
 }

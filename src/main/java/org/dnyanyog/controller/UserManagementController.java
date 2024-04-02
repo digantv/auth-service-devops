@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserManagementController {
 
-	@Autowired
-	UserManagementService userService;
+  @Autowired UserManagementService userService;
 
-	@PostMapping(path = "/api/auth/user", consumes = { "application/json", "application/xml" }, produces = {
-			"application/json", "application/xml" })
-	public UserResponse adduser(@RequestBody UserRequest addUserRequest) throws Exception {
-		return userService.adduser(addUserRequest);
+  @PostMapping(
+      path = "/api/auth/user",
+      consumes = {"application/json", "application/xml"},
+      produces = {"application/json", "application/xml"})
+  public UserResponse adduser(@RequestBody UserRequest addUserRequest) throws Exception {
+    return userService.adduser(addUserRequest);
+  }
 
-	}
-
-	@GetMapping(path = "/api/auth/user/{userId}")
-	public UserData getSingleUser(@PathVariable Long userId) {
-		return userService.getSingleUser(userId);
-	}
+  @GetMapping(path = "/api/auth/user/{userId}")
+  public UserData getSingleUser(@PathVariable Long userId) {
+    return userService.getSingleUser(userId);
+  }
 }

@@ -12,11 +12,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain getSecurityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf().disable().authorizeHttpRequests(authz -> {
-			authz.requestMatchers("/public/**").permitAll().requestMatchers("/private/**").authenticated().anyRequest()
-					.authenticated();
-		}).httpBasic(withDefaults()).build();
-	}
+  @Bean
+  public SecurityFilterChain getSecurityFilterChain(HttpSecurity http) throws Exception {
+    return http.csrf()
+        .disable()
+        .authorizeHttpRequests(
+            authz -> {
+              authz
+                  .requestMatchers("/public/**")
+                  .permitAll()
+                  .requestMatchers("/private/**")
+                  .authenticated()
+                  .anyRequest()
+                  .authenticated();
+            })
+        .httpBasic(withDefaults())
+        .build();
+  }
 }
